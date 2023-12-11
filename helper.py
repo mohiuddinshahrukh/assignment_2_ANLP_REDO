@@ -80,8 +80,13 @@ def minibatch_train(X, Y, model, train_flag=True, epochs=1000, learning_rate=0.0
 
 def compute_accuracy(predictions, ground_truth):
     # Your accuracy calculation logic goes here
-    # Example: Calculate accuracy as the percentage of correct predictions
-    return np.mean(np.argmax(predictions, axis=0) == np.argmax(ground_truth, axis=0))
+    # Example: Calculate accuracy as the percentage of correct prediction
+    # the problem with our code is that predictions parameter is a number, we should have a vector here instead to correctly compare it with ground_truth which is a matrix
+
+    correct = [1 for index in range(ground_truth.shape[1])
+               if np.all(predictions[:, index] == ground_truth[:, index], axis=0)]
+
+    return np.mean(correct)
 
 
 def plot_cost_function(costs, title='Cost Function During Training'):

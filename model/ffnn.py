@@ -18,6 +18,7 @@ class NeuralNetwork(object):
         self.bias_hidden = np.random.uniform(-1, 1, (hidden_size, 1))
         self.weights_hidden_output = np.random.uniform(-1, 1, (num_classes, hidden_size))
         self.bias_output = np.random.uniform(-1, 1, (num_classes, 1))
+        self.num_classes = num_classes
 
     def forward(self, X: npt.ArrayLike) -> npt.ArrayLike:
         z_hidden = np.dot(self.weights_input_hidden, X) + self.bias_hidden
@@ -30,8 +31,9 @@ class NeuralNetwork(object):
 
     def predict(self, X: npt.ArrayLike) -> npt.ArrayLike:
         predictions = self.forward(X)
-        predicted_labels = np.argmax(predictions, axis=0)
-        return predicted_labels
+        indices = np.argmax(predictions, axis=0)
+        predicted_labels = [np.eye(self.num_classes)[index] for index in indices]
+        return np.array(predicted_labels).T
 
     def backward(
             self,
