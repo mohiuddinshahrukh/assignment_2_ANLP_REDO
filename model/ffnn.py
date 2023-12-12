@@ -18,6 +18,7 @@ class NeuralNetwork(object):
         self.bias_hidden = np.random.uniform(-1, 1, (hidden_size, 1))
         self.weights_hidden_output = np.random.uniform(-1, 1, (num_classes, hidden_size))
         self.bias_output = np.random.uniform(-1, 1, (num_classes, 1))
+        # Alejandra made changes here
         self.num_classes = num_classes
 
     def forward(self, X: npt.ArrayLike) -> npt.ArrayLike:
@@ -32,6 +33,7 @@ class NeuralNetwork(object):
     def predict(self, X: npt.ArrayLike) -> npt.ArrayLike:
         predictions = self.forward(X)
         indices = np.argmax(predictions, axis=0)
+        # Alejandra made changes here
         predicted_labels = [np.eye(self.num_classes)[index] for index in indices]
         return np.array(predicted_labels).T
 

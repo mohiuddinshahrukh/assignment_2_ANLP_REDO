@@ -3,11 +3,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def batch_train(X, Y, model, train_flag=False, epochs=2000, learning_rate=0.005):
+def batch_train(X, Y, model, train_flag=False, epochs=1000, learning_rate=0.005):
     # Prediction without Training
     predictions_before_training = model.predict(X)
     accuracy_before_training = compute_accuracy(predictions_before_training, Y)
-    print(f"Accuracy before training: {accuracy_before_training:.2%}")
+    # Alejandra edited here
+    print(f"Accuracy before training: {accuracy_before_training}")
 
     if train_flag:
         # Training
@@ -31,16 +32,20 @@ def batch_train(X, Y, model, train_flag=False, epochs=2000, learning_rate=0.005)
             average_loss = compute_loss(predictions, Y)
             costs.append(average_loss)
 
+            pred_to_acc = model.predict(X)
+            acc = compute_accuracy(pred_to_acc, Y)
+            print(f"Accuracy in epoch {epoch}: {acc}, loss: {average_loss}")
+
         # Prediction after Training
         predictions_after_training = model.predict(X)
         accuracy_after_training = compute_accuracy(predictions_after_training, Y)
-        print(f"Accuracy after training: {accuracy_after_training:.2%}")
+        print(f"Accuracy after training: {accuracy_after_training}")
 
         # Plot the Cost Function
         plot_cost_function(costs, title='Cost Function During Training')
 
 
-def minibatch_train(X, Y, model, train_flag=True, epochs=1000, learning_rate=0.0001, batch_size=64):
+def minibatch_train(X, Y, model, train_flag=True, epochs=1000, learning_rate=0.005, batch_size=64):
     if train_flag:
         # Training
         costs = []
@@ -69,10 +74,16 @@ def minibatch_train(X, Y, model, train_flag=True, epochs=1000, learning_rate=0.0
                 model.weights_hidden_output -= learning_rate * grad_weights_output / batch_size
                 model.bias_output -= learning_rate * grad_bias_output / batch_size
 
+
             # Compute average loss for the epoch
             predictions_after_training = model.predict(X)
+            accuracy_after_training = compute_accuracy(predictions_after_training, Y)
             average_loss = compute_loss(predictions_after_training, Y)
             costs.append(average_loss)
+            print(f"Accuracy in epoch {epoch}: {accuracy_after_training}, loss: {average_loss}")
+
+
+        print(f"Accuracy after training: {accuracy_after_training}")
 
         # Plot the Cost Function
         plot_cost_function(costs, title='Cost Function During Mini-batch Training')
@@ -82,11 +93,12 @@ def compute_accuracy(predictions, ground_truth):
     # Your accuracy calculation logic goes here
     # Example: Calculate accuracy as the percentage of correct prediction
     # the problem with our code is that predictions parameter is a number, we should have a vector here instead to correctly compare it with ground_truth which is a matrix
-
+    # alejandra made changes here
     correct = [1 for index in range(ground_truth.shape[1])
                if np.all(predictions[:, index] == ground_truth[:, index], axis=0)]
 
-    return np.mean(correct)
+    number = sum(correct) / ground_truth.shape[1]
+    return number
 
 
 def plot_cost_function(costs, title='Cost Function During Training'):
