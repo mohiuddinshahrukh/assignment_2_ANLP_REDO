@@ -7,7 +7,7 @@ def batch_train(X, Y, model, train_flag=False, epochs=1000, learning_rate=0.005)
     # Prediction without Training
     predictions_before_training = model.predict(X)
     accuracy_before_training = compute_accuracy(predictions_before_training, Y)
-    # Alejandra edited here
+
     print(f"Accuracy before training: {accuracy_before_training}")
 
     if train_flag:
@@ -92,8 +92,9 @@ def minibatch_train(X, Y, model, train_flag=True, epochs=1000, learning_rate=0.0
 def compute_accuracy(predictions, ground_truth):
     # Your accuracy calculation logic goes here
     # Example: Calculate accuracy as the percentage of correct prediction
-    # the problem with our code is that predictions parameter is a number, we should have a vector here instead to correctly compare it with ground_truth which is a matrix
-    # alejandra made changes here
+    # there was a problem with the code: that predictions parameter Was a number,
+    # it should be a vector here instead to correctly compare
+    # it with ground_truth which is a matrix
     correct = [1 for index in range(ground_truth.shape[1])
                if np.all(predictions[:, index] == ground_truth[:, index], axis=0)]
 

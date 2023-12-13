@@ -8,14 +8,12 @@ def bag_of_words_matrix(sentences: List[str]) -> npt.ArrayLike:
     """
     Convert the dataset into V x M matrix.
     """
-    ############################# STUDENT SOLUTION ##########################
-    # YOUR CODE HERE
 
     bag_of_words = {}
     for i, sentence in enumerate(sentences):
         split_sentence = sentence.split()
         for j, word in enumerate(split_sentence):
-            if word in bag_of_words:
+            if word.lower() in bag_of_words:
                 bag_of_words[word]['f'] += 1
             else:
                 bag_of_words[word] = {'f': 1, 'w': word}
@@ -37,7 +35,6 @@ def bag_of_words_matrix(sentences: List[str]) -> npt.ArrayLike:
                 matrix[row_index, j] += 1
 
     return matrix
-    #########################################################################
 
 
 def labels_matrix(data: Tuple[List[str], Set[str]]) -> npt.ArrayLike:
@@ -46,8 +43,6 @@ def labels_matrix(data: Tuple[List[str], Set[str]]) -> npt.ArrayLike:
     k = number of classes
     m = number of examples
     """
-    ############################# STUDENT SOLUTION ##########################
-    # YOUR CODE HERE
 
     examples = data[0]
     classes = data[1]
@@ -55,43 +50,22 @@ def labels_matrix(data: Tuple[List[str], Set[str]]) -> npt.ArrayLike:
 
     matrix = np.zeros((len(classes), len(examples)))
 
-    # Populating the labels matrix
     for i, intent in enumerate(examples):
-        # Assuming intent is the class label for the corresponding example
         class_label = intent
         if class_label in class_to_index:
             matrix[class_to_index[class_label], i] = 1
 
     return matrix
-    #########################################################################
 
 
 def softmax(z: npt.ArrayLike) -> npt.ArrayLike:
-    """
-    Softmax function.
-    """
-    ############################# STUDENT SOLUTION ##########################
-    # YOUR CODE HERE
     exp_z = np.exp(z - np.max(z, axis=0, keepdims=True))
     return exp_z / np.sum(exp_z, axis=0, keepdims=True)
-    #########################################################################
 
 
 def relu(z: npt.ArrayLike) -> npt.ArrayLike:
-    """
-    Rectified Linear Unit function.
-    """
-    ############################# STUDENT SOLUTION ##########################
-    # YOUR CODE HERE
     return np.maximum(0, z)
-    #########################################################################
 
 
 def relu_prime(z: npt.ArrayLike) -> npt.ArrayLike:
-    """
-    First derivative of ReLU function.
-    """
-    ############################# STUDENT SOLUTION ##########################
-    # YOUR CODE HERE
     return np.where(z > 0, 1, 0)
-    #########################################################################
